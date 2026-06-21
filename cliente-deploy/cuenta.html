@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>DiverZona CHV · Tu cuenta</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--paper:#ece8dd;--card:#f4f1e8;--ink:#1b1b1b;--ink2:#403d36;--muted:#8a8473;--line:#d6d0c0;--red:#c0392b;--green:#2f7d4f}
+body{font-family:'Archivo',system-ui,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding:18px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:440px;margin:0 auto}
+header{border-bottom:3px solid var(--ink);padding-bottom:12px;margin-bottom:14px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+h1{font-size:24px;font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:.9}h1 b{color:var(--red)}
+.kick{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+.stamp{font-family:'Space Mono',monospace;font-size:11px;border:2px solid var(--red);color:var(--red);border-radius:6px;padding:4px 9px;transform:rotate(-3deg);white-space:nowrap;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 0;margin-bottom:14px}
+.it{display:flex;justify-content:space-between;gap:10px;padding:11px 16px;border-bottom:1px dashed var(--line)}
+.it:last-child{border-bottom:0}
+.it .n{font-weight:700;font-size:15px}.it .n small{display:block;color:var(--muted);font-family:'Space Mono',monospace;font-size:11px;font-weight:400}
+.it .p{font-family:'Space Mono',monospace;font-weight:700;font-size:15px;white-space:nowrap}
+.tot{background:var(--ink);color:var(--paper);border-radius:8px;padding:16px 18px;display:flex;justify-content:space-between;align-items:baseline}
+.tot .l{font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.8}
+.tot .bs{font-family:'Archivo';font-size:30px;font-weight:900;letter-spacing:-.02em}
+.tot .usd{font-family:'Space Mono',monospace;font-size:13px;opacity:.8;text-align:right}
+.foot{text-align:center;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);margin-top:16px;text-transform:uppercase;letter-spacing:1px;line-height:1.7}
+.empty{text-align:center;padding:50px 16px;color:var(--muted);font-family:'Space Mono',monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><div class="kick"><span style="color:var(--red);font-weight:700">Diver</span>-Zona CHV · Charallave</div><h1>Tu <b>cuenta</b></h1></div>
+    <div class="stamp" id="mesa">—</div>
+  </header>
+  <div id="content"><div class="empty">Cargando tu cuenta…</div></div>
+  <div class="foot">Esta es tu cuenta actual · puede cambiar si sigues pidiendo.<br>Paga en la caja · ¡Gracias por venir! ⭐</div>
+</div>
+<script>
+const fmtUsd=n=>'$'+(+n||0).toFixed(2);
+const fmtBs=n=>'Bs '+Math.round(+n||0).toLocaleString('es-VE');
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function b64decode(s){ try{ return decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/')))); }catch(e){ try{return atob(s);}catch(_){return '';} } }
+try{
+  const raw=(location.hash||'').replace(/^#/,'');
+  const d=JSON.parse(b64decode(raw));
+  document.getElementById('mesa').textContent = d.n || 'Cuenta';
+  const items=(d.i||[]);
+  const rows = items.length
+    ? items.map(i=>`<div class="it"><div class="n">${esc(i.n)}${i.q>1?' ×'+i.q:''}<small>${fmtUsd(i.p)} c/u</small></div><div class="p">${fmtUsd(i.p*(i.q||1))}</div></div>`).join('')
+    : '<div class="it"><div class="n">Sin productos aún</div><div class="p">$0.00</div></div>';
+  const totUsd = items.reduce((a,i)=>a+(+i.p||0)*(i.q||1), +d.t||0) || (+d.t||0);
+  const totBs = +d.b || Math.round(totUsd*(+d.r||0));
+  document.getElementById('content').innerHTML =
+    '<div class="card">'+rows+'</div>'
+    +'<div class="tot"><div><div class="l">Total a pagar</div><div class="bs">'+fmtBs(totBs)+'</div></div><div class="usd">'+fmtUsd(items.length?items.reduce((a,i)=>a+(+i.p||0)*(i.q||1),0):totUsd)+'<br>tasa '+(+d.r||0).toFixed(2)+'</div></div>';
+}catch(e){
+  document.getElementById('content').innerHTML='<div class="empty">No se pudo leer la cuenta.<br>Pídele al cajero que te muestre el QR de nuevo.</div>';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>DiverZona CHV · Resumen</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{
+  --bg:#ece8dd; --panel:#f4f1e8; --panel2:#e7e2d4; --line:#d6d0c0; --line2:#c4bda9;
+  --ink:#1b1b1b; --ink2:#403d36; --muted:#8a8473; --dim:#a39c89;
+  --accent:#c0392b; --accent2:#2f7d4f; --gold:#d99e2b; --bad:#c0392b; --red:#c0392b; --green:#2f7d4f; --blue:#2d6ca8;
+  --mono:'Space Mono',ui-monospace,monospace; --display:'Archivo',system-ui,sans-serif; --sans:'Archivo',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100vh;
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);-webkit-font-smoothing:antialiased}
+.wrap{max-width:680px;margin:0 auto;padding:16px}
+
+/* header */
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:14px;
+  border-bottom:3px solid var(--ink);padding-bottom:12px}
+.brand{font-family:var(--display);font-weight:900;font-size:24px;letter-spacing:-.02em;text-transform:uppercase;line-height:.92}
+.brand b{color:var(--red)}
+.brand small{display:block;font-family:var(--mono);font-weight:700;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:5px}
+.hbtns{display:flex;gap:8px;align-items:center}
+.icon-btn{background:transparent;border:1.5px solid var(--ink);color:var(--ink);border-radius:6px;
+  width:38px;height:38px;font-size:16px;cursor:pointer;display:grid;place-items:center;transition:.12s}
+.icon-btn:active{transform:scale(.92)}
+.devtag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;color:#fff;background:var(--red);
+  padding:4px 8px;border-radius:5px}
+
+/* tabs */
+.tabs{display:flex;gap:6px;background:transparent;border:0;padding:0;margin-bottom:14px}
+.tab{flex:1;text-align:center;padding:11px;border-radius:6px;font-weight:800;font-size:13px;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--ink);cursor:pointer;transition:.12s;border:1.5px solid var(--ink);background:transparent}
+.tab.on{background:var(--ink);color:var(--paper,#f4f1e8)}
+
+/* KPI grid */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--ink);border-radius:5px;padding:14px 16px}
+.kpi.hero{grid-column:1/-1;background:var(--panel);border-top-color:var(--red)}
+.kpi .lbl{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.kpi .val{font-family:var(--display);font-weight:900;font-size:28px;margin-top:5px;letter-spacing:-.02em}
+.kpi.hero .val{font-size:38px;color:var(--green)}
+.kpi .sub{font-size:12px;color:var(--dim);margin-top:3px;font-family:var(--mono)}
+.split{display:flex;gap:14px;margin-top:6px}
+.split div{flex:1}
+.split .t{font-size:11px;color:var(--muted);font-weight:600}
+.split .n{font-family:var(--display);font-weight:900;font-size:17px}
+
+/* section */
+.sec-title{font-family:var(--display);font-size:12px;color:var(--red);text-transform:uppercase;letter-spacing:1px;
+  font-weight:800;margin:18px 2px 8px;border-bottom:1px solid var(--line);padding-bottom:6px;display:flex;align-items:center;gap:7px}
+.sec-title::before{content:"§";color:var(--ink);font-weight:900}
+.list{background:var(--panel);border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .tag{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:3px 7px;border-radius:4px;white-space:nowrap;letter-spacing:.5px}
+.tag.gaming{background:rgba(47,125,79,.14);color:var(--green);border:1px solid rgba(47,125,79,.3)}
+.tag.bar{background:rgba(192,57,43,.12);color:var(--red);border:1px solid rgba(192,57,43,.3)}
+.row .who{flex:1;min-width:0}
+.row .who b{font-weight:800;font-size:14px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .who span{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.row .amt{font-family:var(--display);font-weight:900;font-size:16px;text-align:right}
+.row .amt small{display:block;font-size:11px;color:var(--dim);font-family:var(--mono);font-weight:400}
+.row .time{font-family:var(--mono);font-size:11px;color:var(--dim);min-width:38px}
+.empty{padding:34px 16px;text-align:center;color:var(--muted);font-size:14px;font-family:var(--mono)}
+
+/* closures */
+.cl-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line)}
+.cl-row:last-child{border-bottom:0}
+.cl-row .d{font-size:13px;font-weight:700;flex:1;min-width:0}
+.cl-row .d small{display:block;color:var(--muted);font-weight:400;font-size:11px;font-family:var(--mono)}
+.cl-row .v{font-family:var(--display);font-weight:900;color:var(--green);white-space:nowrap;text-align:right}
+
+/* charts */
+.chartbox{background:var(--panel);border:1px solid var(--line);border-radius:5px;
+  padding:14px 12px 10px;display:flex;align-items:flex-end;gap:7px;height:170px}
+.cbar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  height:100%;gap:5px;min-width:0}
+.cbar .bv{font-family:var(--mono);font-size:10px;color:var(--ink2);white-space:nowrap;font-weight:700}
+.cbar .bar{width:78%;max-width:34px;min-height:4px;border-radius:3px 3px 0 0;
+  background:var(--ink);transition:height .35s ease}
+.cbar.today .bar{background:var(--gold)}
+.cbar .bd{font-size:10px;color:var(--dim);white-space:nowrap;font-family:var(--mono)}
+.propbar{display:flex;height:34px;border-radius:5px;overflow:hidden;border:1.5px solid var(--ink);
+  font-family:var(--mono);font-size:12px;font-weight:700;background:var(--panel)}
+.propbar .seg{display:flex;align-items:center;justify-content:center;color:#fff;
+  white-space:nowrap;min-width:0;overflow:hidden;transition:width .35s ease}
+
+/* developer delete button */
+.del{background:transparent;border:1.5px solid var(--red);color:var(--red);
+  border-radius:5px;width:34px;height:34px;font-size:14px;cursor:pointer;flex:none;
+  display:grid;place-items:center;transition:.12s}
+.del:active{transform:scale(.9)}
+
+/* login */
+.login{max-width:380px;margin:13vh auto 0;padding:24px}
+.login .brand{font-size:28px;text-align:center;margin-bottom:6px}
+.login p{text-align:center;color:var(--ink2);font-size:13px;margin-bottom:22px}
+.fld{margin-bottom:12px}
+.fld label{display:block;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;font-weight:700}
+input{width:100%;background:var(--panel);border:1.5px solid var(--line2);color:var(--ink);
+  border-radius:6px;padding:14px 15px;font-size:16px;font-weight:600;font-family:var(--sans);outline:none}
+input:focus{border-color:var(--ink)}
+.btn{width:100%;background:var(--red);color:#fff;border:0;border-radius:6px;
+  padding:15px;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;margin-top:6px;transition:.1s;box-shadow:0 4px 0 #8f291f}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #8f291f}
+.btn:disabled{opacity:.6}
+.err{color:var(--bad);font-size:13px;font-family:var(--mono);text-align:center;margin-top:12px;min-height:18px}
+.hide{display:none!important}
+.foot{text-align:center;color:var(--dim);font-size:11px;font-family:var(--mono);margin:22px 0 8px;text-transform:uppercase;letter-spacing:1px}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:middle}
+.dot.off{background:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- ░░ LOGIN ░░ -->
+<div id="loginView" class="login">
+  <div class="brand"><b>Diver</b>-Zona CHV<small>Resumen de ventas</small></div>
+  <p>Ingresa la contraseña para ver las ventas del local.</p>
+  <div class="fld"><label>Contraseña</label><input id="pass" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+  <button id="loginBtn" class="btn">Entrar</button>
+  <div id="loginErr" class="err"></div>
+</div>
+
+<!-- ░░ DASHBOARD ░░ -->
+<div id="dashView" class="wrap hide">
+  <header>
+    <div class="brand"><b>Diver</b>-Zona CHV<small id="todayLbl">—</small></div>
+    <div class="hbtns">
+      <span id="devTag" class="devtag hide">DEV</span>
+      <button class="icon-btn" id="refreshBtn" title="Actualizar">↻</button>
+      <button class="icon-btn" id="logoutBtn" title="Salir">⎋</button>
+    </div>
+  </header>
+
+  <!-- tabs Hoy / Mes / Inventario -->
+  <div class="tabs">
+    <button class="tab on" id="tabDay">Hoy</button>
+    <button class="tab" id="tabMonth">Este mes</button>
+    <button class="tab" id="tabInv">📦 Inventario</button>
+  </div>
+
+  <!-- ───── VISTA HOY ───── -->
+  <div id="viewDay">
+    <div class="kpis">
+      <div class="kpi hero">
+        <div class="lbl">Total de hoy</div>
+        <div class="val" id="kTotalUsd">$0.00</div>
+        <div class="sub" id="kTotalBs">Bs 0</div>
+        <div class="sub" id="kProfit" style="color:var(--green);font-weight:800;margin-top:5px"></div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Cobros</div>
+        <div class="val" id="kCount">0</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Gaming / Comida</div>
+        <div class="split">
+          <div><div class="t">🎮 Gaming</div><div class="n" id="kGaming">$0</div></div>
+          <div><div class="t">🍔 Comida</div><div class="n" id="kFood">$0</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpis" style="margin-top:4px">
+      <div class="kpi">
+        <div class="lbl">Ticket promedio</div>
+        <div class="val" id="kAvg">$0.00</div>
+        <div class="sub" id="kIgtf"></div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Hora pico</div>
+        <div class="val" id="kPeak" style="font-size:24px">—</div>
+        <div class="sub" id="kPeakSub"></div>
+      </div>
+    </div>
+
+    <div class="sec-title">Más vendidos (hoy)</div>
+    <div class="list" id="topList"><div class="empty">—</div></div>
+
+    <div class="sec-title">Métodos de pago (hoy)</div>
+    <div class="list" id="payList"><div class="empty">—</div></div>
+
+    <div class="sec-title">Por empleado (hoy)</div>
+    <div class="list" id="empList"><div class="empty">—</div></div>
+
+    <div class="sec-title">Anulaciones, descuentos y devoluciones (hoy)</div>
+    <div class="list" id="auditList"><div class="empty">—</div></div>
+
+    <div class="sec-title">Ventas de hoy</div>
+    <div class="list" id="salesList"><div class="empty">Cargando…</div></div>
+
+    <div class="sec-title">Últimos cierres</div>
+    <div class="list" id="closeList"><div class="empty">—</div></div>
+  </div>
+
+  <!-- ───── VISTA MES ───── -->
+  <div id="viewMonth" class="hide">
+    <div class="kpis">
+      <div class="kpi hero">
+        <div class="lbl" id="mLbl">Total del mes</div>
+        <div class="val" id="mTotalUsd">$0.00</div>
+        <div class="sub" id="mTotalBs">Bs 0</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Días cerrados</div>
+        <div class="val" id="mDays">0</div>
+        <div class="sub" id="mCobros">0 cobros</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Gaming / Comida</div>
+        <div class="split">
+          <div><div class="t">🎮 Gaming</div><div class="n" id="mGaming">$0</div></div>
+          <div><div class="t">🍔 Comida</div><div class="n" id="mFood">$0</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-title">Resumen fiscal del mes (para declarar)</div>
+    <div class="kpis">
+      <div class="kpi" style="border-top-color:var(--green)">
+        <div class="lbl">💹 Utilidad del mes</div>
+        <div class="val" id="mProfit" style="color:var(--green)">$0.00</div>
+        <div class="sub" id="mMargin"></div>
+      </div>
+      <div class="kpi" style="border-top-color:var(--gold)">
+        <div class="lbl">🧾 IGTF recaudado</div>
+        <div class="val" id="mIgtf" style="font-size:24px">Bs 0</div>
+        <div class="sub">a declarar (3% divisas)</div>
+      </div>
+    </div>
+
+    <div class="sec-title">Tendencia · últimos días</div>
+    <div class="chartbox" id="trendChart"><div class="empty" style="margin:auto">Cargando…</div></div>
+
+    <div class="sec-title">Gaming vs Comida (mes)</div>
+    <div class="propbar" id="gcBar"></div>
+
+    <div class="sec-title">Cierres del mes (día por día)</div>
+    <div class="list" id="monthList"><div class="empty">Cargando…</div></div>
+  </div>
+
+  <!-- ───── VISTA INVENTARIO ───── -->
+  <div id="viewInv" class="hide">
+    <div class="kpis">
+      <div class="kpi hero" style="border-top-color:var(--gold)">
+        <div class="lbl">💰 Valor del inventario</div>
+        <div class="val" id="iValue" style="color:var(--gold)">$0.00</div>
+        <div class="sub" id="iValueBs">Bs 0</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Productos bajo mínimo</div>
+        <div class="val" id="iLow" style="color:var(--red)">0</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">🗑️ Mermas hoy</div>
+        <div class="val" id="iMerma" style="color:var(--red);font-size:24px">$0.00</div>
+      </div>
+    </div>
+    <div class="sec-title">Stock actual</div>
+    <div class="list" id="invList"><div class="empty">Toca para cargar el inventario…</div></div>
+    <div class="foot" style="border:0"><span id="invAsOf"></span></div>
+  </div>
+
+  <div class="foot"><span class="dot" id="liveDot"></span><span id="liveTxt">Actualizado</span></div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — pega la URL del Web App de Apps Script (termina en /exec).
+   (La misma que pusiste en el POS. No lleva contraseñas: estas se
+   piden al entrar y se verifican en el servidor, así que aunque
+   alguien vea este archivo no puede sacar los datos sin la clave.)
+   ============================================================ */
+const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxZSl3yYlPSahxF3K1iKe6ItMfznhglPdJ2B8cHMNFlJHWwhWdChQK8i6Wst3V8WQHlKQ/exec';
+
+const $ = s=>document.querySelector(s);
+const fmtUsd = n=>'$'+(+n||0).toFixed(2);
+const fmtBs  = n=>'Bs '+Math.round(+n||0).toLocaleString('es-VE');
+const todayStr = ()=>new Date().toLocaleDateString('es-VE');
+const esc = s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* La fecha puede llegar como texto "10/6/2026" o como fecha-hora ISO (Google Sheets a veces
+   la convierte). Esto la normaliza siempre a "10/6/2026" para comparar y mostrar bien. */
+const fechaKey = row=>{
+  const f = row && row.fecha;
+  if(f){ const s=String(f);
+    if(!s.includes('T') && !s.includes('-')) return s;          // ya es "10/6/2026"
+    const d=new Date(s); if(!isNaN(d)) return d.toLocaleDateString('es-VE');
+  }
+  const d2=new Date(row && row.created_at);                      // respaldo: usa la hora de subida
+  return isNaN(d2) ? '' : d2.toLocaleDateString('es-VE');
+};
+
+let timer=null, isDev=false, curTab='day', PW='';
+
+function boot(){
+  if(WEBAPP_URL.startsWith('PEGA')){
+    $('#loginErr').textContent='⚠️ Falta poner la URL del Web App en este archivo.';
+    return;
+  }
+  const saved = sessionStorage.getItem('dz-dash-pw');
+  if(saved){ PW=saved; tryEnter(true); }
+}
+
+/* ── login (una sola contraseña; el servidor dice si es jefe o developer) ── */
+$('#loginBtn').onclick = ()=>{ PW=$('#pass').value; tryEnter(false); };
+$('#pass').addEventListener('keydown',e=>{ if(e.key==='Enter')$('#loginBtn').click(); });
+
+async function tryEnter(silent){
+  if(!PW){ $('#loginErr').textContent='Escribe la contraseña.'; return; }
+  $('#loginBtn').disabled=true; if(!silent)$('#loginErr').textContent='';
+  try{
+    const data = await apiGet(PW);
+    if(!data.ok){ throw new Error(data.error||'pw'); }
+    sessionStorage.setItem('dz-dash-pw', PW);
+    isDev = data.role==='dev';
+    $('#devTag').classList.toggle('hide', !isDev);
+    showDash(data);
+  }catch(err){
+    sessionStorage.removeItem('dz-dash-pw');
+    $('#loginErr').textContent = err.message==='pw' ? 'Contraseña incorrecta.' : 'No se pudo conectar. Reintenta.';
+  }finally{ $('#loginBtn').disabled=false; }
+}
+
+$('#logoutBtn').onclick = ()=>{ clearInterval(timer); PW=''; sessionStorage.removeItem('dz-dash-pw');
+  $('#dashView').classList.add('hide'); $('#loginView').classList.remove('hide'); $('#pass').value=''; };
+$('#refreshBtn').onclick = ()=>load();
+
+/* ── tabs ── */
+$('#tabDay').onclick   = ()=>switchTab('day');
+$('#tabMonth').onclick = ()=>switchTab('month');
+$('#tabInv').onclick   = ()=>switchTab('inv');
+function switchTab(t){
+  curTab=t;
+  $('#tabDay').classList.toggle('on', t==='day');
+  $('#tabMonth').classList.toggle('on', t==='month');
+  $('#tabInv').classList.toggle('on', t==='inv');
+  $('#viewDay').classList.toggle('hide', t!=='day');
+  $('#viewMonth').classList.toggle('hide', t!=='month');
+  $('#viewInv').classList.toggle('hide', t!=='inv');
+  if(t==='inv') loadInventory();
+}
+
+/* ── Inventario (lee el snapshot que sube el POS, sin datos sensibles) ── */
+let _invLoading=false;
+async function loadInventory(){
+  if(_invLoading) return; _invLoading=true;
+  $('#invList').innerHTML='<div class="empty">Cargando inventario…</div>';
+  try{
+    const res=await fetch(WEBAPP_URL+'?pw='+encodeURIComponent(PW)+'&backups=1');
+    const d=await res.json();
+    if(!d.ok){ $('#invList').innerHTML='<div class="empty">No se pudo cargar.</div>'; return; }
+    // toma el respaldo MÁS RECIENTE que tenga inventario
+    let snap=null, snapAt='';
+    (d.backups||[]).forEach(b=>{ try{ const data=typeof b.data==='string'?JSON.parse(b.data):b.data;
+      if(data && Array.isArray(data.inventory)){ snap=data; snapAt=b.created_at||data.at||''; } }catch(e){} });
+    if(!snap){ $('#invList').innerHTML='<div class="empty">Aún no hay inventario sincronizado.<br><span style="font-size:12px">Abre la caja unos segundos para que suba el primer reporte.</span></div>'; return; }
+    renderInventoryDash(snap, snapAt);
+  }catch(e){ $('#invList').innerHTML='<div class="empty">Sin conexión. Reintenta.</div>'; }
+  finally{ _invLoading=false; }
+}
+const CAT_ICON={bebida:'🍺',insumo:'🧂',comida:'🍔',combo:'🍔'};
+function renderInventoryDash(snap, at){
+  const inv=(snap.inventory||[]).slice().sort((a,b)=>(b.stock*b.costPerUnit)-(a.stock*a.costPerUnit));
+  const val=inv.reduce((a,p)=>a+(+p.stock||0)*(+p.costPerUnit||0),0);
+  const low=inv.filter(p=>(+p.minStock||0)>0 && (+p.stock||0)<=(+p.minStock||0));
+  const valUsd=snap.valueUsd!=null?snap.valueUsd:val;
+  $('#iValue').textContent=fmtUsd(valUsd);
+  $('#iValueBs').textContent = snap.rate>0 ? fmtBs(valUsd*snap.rate) : '';
+  $('#iLow').textContent=low.length;
+  $('#iMerma').textContent=fmtUsd(snap.mermasUsd||0);
+  const el=$('#invList');
+  if(!inv.length){ el.innerHTML='<div class="empty">Inventario vacío.</div>'; }
+  else{
+    el.innerHTML='';
+    inv.forEach(p=>{
+      const isLow=(+p.minStock||0)>0 && (+p.stock||0)<=(+p.minStock||0);
+      const div=document.createElement('div'); div.className='row';
+      div.innerHTML=`<span style="font-size:18px;min-width:24px;text-align:center">${CAT_ICON[p.category]||'📦'}</span>
+        <div class="who"><b>${esc(p.name)}</b><span>${p.costPerUnit?fmtUsd(p.costPerUnit)+'/'+esc(p.unit||''):''}${isLow?' · ⚠ bajo':''}</span></div>
+        <div class="amt" style="${isLow?'color:var(--red)':''}">${(+p.stock||0)}<small>${esc(p.unit||'')}</small></div>`;
+      el.appendChild(div);
+    });
+  }
+  if($('#invAsOf'))$('#invAsOf').textContent = at? ('Inventario al '+new Date(at).toLocaleString('es-VE')) : '';
+}
+
+function showDash(data){
+  $('#loginView').classList.add('hide');
+  $('#dashView').classList.remove('hide');
+  $('#todayLbl').textContent = new Date().toLocaleDateString('es-VE',{weekday:'long',day:'numeric',month:'long'});
+  render(data);
+  clearInterval(timer); timer=setInterval(()=>{ if(!document.hidden) load(); }, 20000);   // auto-refresca cada 20 s (pausa si no se ve)
+}
+
+/* ── llamadas al Web App ── */
+async function apiGet(pw){
+  const res = await fetch(WEBAPP_URL+'?pw='+encodeURIComponent(pw));
+  return res.json();
+}
+async function load(){
+  try{
+    const data = await apiGet(PW);
+    if(!data.ok) throw new Error(data.error||'pw');
+    render(data);
+    $('#liveDot').classList.remove('off');
+    $('#liveTxt').textContent='Actualizado '+new Date().toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'});
+  }catch(err){
+    $('#liveDot').classList.add('off');
+    $('#liveTxt').textContent='Sin conexión — reintentando…';
+  }
+}
+
+/* ── render principal ── */
+function render(data){
+  const byNew = (a,b)=> String(b.created_at||'').localeCompare(String(a.created_at||''));
+  const sales    = (data.sales||[]).slice().sort(byNew);
+  const closures = (data.closures||[]).slice().sort(byNew);
+  const today = todayStr();
+  const hoy = sales.filter(s=>fechaKey(s)===today);
+
+  renderKpis(hoy); renderMetrics(hoy); renderTop(hoy); renderSales(hoy); renderPay(hoy); renderEmp(hoy);
+  renderAudit((data.audit||[]).slice().sort(byNew));
+  renderClosures(closures.slice(0,7));
+
+  const now=new Date();
+  const inMonth = x=>{ const d=new Date(x.created_at); return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth(); };
+  const monthCl = closures.filter(inMonth);
+  renderMonth(monthCl, hoy);
+  renderFiscal(sales.filter(inMonth));
+  renderTrend(closures, hoy);   // barras de los últimos días (incluye hoy en vivo)
+  renderGC(monthCl, hoy);       // proporción Gaming vs Comida del mes
+}
+
+/* ── Resumen fiscal del mes: utilidad + IGTF a declarar ── */
+function renderFiscal(monthSales){
+  const sum=k=>monthSales.reduce((a,s)=>a+(+s[k]||0),0);
+  const ventas=sum('totalUsd'), costo=sum('costUsd'), igtf=sum('igtfBs');
+  const util=ventas-costo;
+  if($('#mProfit'))$('#mProfit').textContent=fmtUsd(util);
+  if($('#mMargin'))$('#mMargin').textContent = costo>0 && ventas>0 ? (Math.round(util/ventas*100)+'% margen · costo '+fmtUsd(costo)) : 'carga costos en inventario para ver margen';
+  if($('#mIgtf'))$('#mIgtf').textContent=fmtBs(igtf);
+}
+
+/* ── gráfico de barras: últimos días ── */
+function renderTrend(closures, hoyLive){
+  const el=$('#trendChart'); if(!el) return;
+  const today=todayStr();
+  // tomo hasta 6 cierres recientes + el día de hoy en vivo (si tiene ventas y no está cerrado)
+  let dias = closures.slice(0,7).map(c=>({k:fechaKey(c), v:+c.totalUsd||0}));
+  const hoyCerrado = dias.some(d=>d.k===today);
+  const hoyUsd = (hoyLive||[]).reduce((a,s)=>a+(+s.totalUsd||0),0);
+  dias = dias.reverse();                                   // cronológico (viejo → nuevo)
+  if(!hoyCerrado && hoyUsd>0){ dias=dias.slice(-6); dias.push({k:today, v:hoyUsd, hoy:true}); }
+  else { dias=dias.slice(-7); }
+  if(!dias.length){ el.innerHTML='<div class="empty" style="margin:auto">Aún no hay datos para graficar.</div>'; return; }
+  const max=Math.max(...dias.map(d=>d.v), 1);
+  el.innerHTML = dias.map(d=>{
+    const h=Math.max(4, Math.round(d.v/max*100));
+    const dd=String(d.k).split('/').slice(0,2).join('/');   // "10/6"
+    return `<div class="cbar ${d.hoy?'today':''}"><div class="bv">$${d.v.toFixed(0)}</div>`
+      +`<div class="bar" style="height:${h}%"></div><div class="bd">${esc(dd)}${d.hoy?' •':''}</div></div>`;
+  }).join('');
+}
+
+/* ── barra de proporción Gaming vs Comida ── */
+function renderGC(closures, hoyLive){
+  const sum=(arr,k)=>arr.reduce((a,x)=>a+(+x[k]||0),0);
+  const g=sum(closures,'gamingUsd')+sum(hoyLive||[],'gamingUsd');
+  const f=sum(closures,'comidaUsd')+sum(hoyLive||[],'comidaUsd');
+  const tot=g+f;
+  const el=$('#gcBar');
+  if(tot<=0){ el.innerHTML='<div class="seg" style="width:100%;background:var(--panel2);color:var(--muted)">Sin datos aún</div>'; return; }
+  const gp=Math.round(g/tot*100), fp=100-gp;
+  el.innerHTML=`<div class="seg" style="width:${gp}%;background:var(--accent2)" title="Gaming ${fmtUsd(g)}">${gp>=14?'🎮 '+gp+'%':''}</div>`
+    +`<div class="seg" style="width:${fp}%;background:var(--accent);color:#fff" title="Comida ${fmtUsd(f)}">${fp>=14?'🍔 '+fp+'%':''}</div>`;
+}
+
+/* ── render: HOY ── */
+function renderKpis(rows){
+  const sum=k=>rows.reduce((a,s)=>a+(+s[k]||0),0);
+  $('#kTotalUsd').textContent=fmtUsd(sum('totalUsd'));
+  $('#kTotalBs').textContent=fmtBs(sum('totalBs'));
+  $('#kCount').textContent=rows.length;
+  $('#kGaming').textContent=fmtUsd(sum('gamingUsd'));
+  $('#kFood').textContent=fmtUsd(sum('comidaUsd'));
+  // Utilidad ≈ ventas − costo de lo vendido. Margen %.
+  const ventas=sum('totalUsd'), costo=sum('costUsd');
+  const util=ventas-costo;
+  const el=$('#kProfit');
+  if(costo>0){ const margen=ventas>0?Math.round(util/ventas*100):0; el.textContent='💹 Utilidad aprox: '+fmtUsd(util)+' · '+margen+'% margen'; }
+  else { el.textContent=''; }
+}
+// ── Métricas: ticket promedio + hora pico ──
+function renderMetrics(rows){
+  const n=rows.length;
+  const tot=rows.reduce((a,s)=>a+(+s.totalUsd||0),0);
+  $('#kAvg').textContent = n?fmtUsd(tot/n):'$0.00';
+  const igtf=rows.reduce((a,s)=>a+(+s.igtfBs||0),0);
+  $('#kIgtf').textContent = igtf>0 ? ('🧾 IGTF recaudado: '+fmtBs(igtf)) : '';
+  // hora pico: agrupa por la hora (de la columna "hora", ej "10:05 p. m." o "22:05")
+  const byHour={};
+  rows.forEach(s=>{ const h=parseHour(s.hora); if(h==null)return; byHour[h]=(byHour[h]||0)+1; });
+  const keys=Object.keys(byHour);
+  if(!keys.length){ $('#kPeak').textContent='—'; $('#kPeakSub').textContent=''; return; }
+  const peak=keys.sort((a,b)=>byHour[b]-byHour[a])[0];
+  $('#kPeak').textContent = fmtHourRange(+peak);
+  $('#kPeakSub').textContent = byHour[peak]+' cobro'+(byHour[peak]>1?'s':'');
+}
+function parseHour(h){
+  if(h==null) return null; const s=String(h).trim();
+  let m=s.match(/(\d{1,2}):\d{2}\s*(a\.?\s*m\.?|p\.?\s*m\.?)/i);
+  if(m){ let hr=+m[1]%12; if(/p/i.test(m[2]))hr+=12; return hr; }
+  m=s.match(/(\d{1,2}):\d{2}/); if(m) return +m[1];
+  return null;
+}
+function fmtHourRange(h){ const f=n=>{const x=((n%24)+24)%24; const ap=x<12?'am':'pm'; let hh=x%12; if(hh===0)hh=12; return hh+ap;}; return f(h)+'–'+f(h+1); }
+// ── Más vendidos (de los items de cada venta) ──
+function renderTop(rows){
+  const el=$('#topList'); const freq={};
+  rows.forEach(s=>{ let arr=[]; try{arr=JSON.parse(s.items);}catch(e){} if(!Array.isArray(arr))return;
+    arr.forEach(i=>{ const k=String(i.name||'').trim(); if(!k)return; freq[k]=(freq[k]||0)+(+i.qty||1); }); });
+  const ord=Object.keys(freq).sort((a,b)=>freq[b]-freq[a]).slice(0,6);
+  if(!ord.length){ el.innerHTML='<div class="empty">Sin datos de productos aún.</div>'; return; }
+  const medal=['🥇','🥈','🥉'];
+  el.innerHTML='';
+  ord.forEach((k,i)=>{
+    const div=document.createElement('div'); div.className='row';
+    div.innerHTML=`<span style="font-size:18px;min-width:24px;text-align:center">${medal[i]||'•'}</span>
+      <div class="who"><b>${esc(k)}</b></div>
+      <div class="amt">${freq[k]}<small>vendidos</small></div>`;
+    el.appendChild(div);
+  });
+}
+// ── Desglose por método de pago ──
+const PM_ICON={'Efectivo Bs':'💵','Pago Móvil':'📲','Divisa $':'💲','Mixto':'🔀','Crédito (Comité)':'🏛️'};
+function renderPay(rows){
+  const el=$('#payList');
+  if(!rows.length){ el.innerHTML='<div class="empty">Sin ventas hoy.</div>'; return; }
+  const by={}; rows.forEach(s=>{ const m=String(s.metodo||'—'); if(!by[m])by[m]={usd:0,n:0}; by[m].usd+=(+s.totalUsd||0); by[m].n++; });
+  const tot=Object.values(by).reduce((a,d)=>a+d.usd,0)||1;
+  el.innerHTML='';
+  Object.keys(by).sort((a,b)=>by[b].usd-by[a].usd).forEach(m=>{
+    const d=by[m]; const pct=Math.round(d.usd/tot*100);
+    const div=document.createElement('div'); div.className='row';
+    div.innerHTML=`<span style="font-size:18px">${PM_ICON[m]||'•'}</span>
+      <div class="who"><b>${esc(m)}</b><span>${d.n} venta${d.n>1?'s':''} · ${pct}%</span></div>
+      <div class="amt">${fmtUsd(d.usd)}</div>`;
+    el.appendChild(div);
+  });
+}
+// ── Ranking por empleado ──
+function renderEmp(rows){
+  const el=$('#empList');
+  if(!rows.length){ el.innerHTML='<div class="empty">Sin ventas hoy.</div>'; return; }
+  const by={}; rows.forEach(s=>{ const e=String(s.empleado||'—').trim()||'—'; if(!by[e])by[e]={usd:0,n:0}; by[e].usd+=(+s.totalUsd||0); by[e].n++; });
+  const ord=Object.keys(by).sort((a,b)=>by[b].usd-by[a].usd);
+  const medal=['🥇','🥈','🥉'];
+  el.innerHTML='';
+  ord.forEach((e,i)=>{
+    const d=by[e];
+    const div=document.createElement('div'); div.className='row';
+    div.innerHTML=`<span style="font-size:18px;min-width:24px;text-align:center">${medal[i]||'👤'}</span>
+      <div class="who"><b>${esc(e)}</b><span>${d.n} venta${d.n>1?'s':''}</span></div>
+      <div class="amt">${fmtUsd(d.usd)}</div>`;
+    el.appendChild(div);
+  });
+}
+// ── Auditoría: anulaciones, descuentos, devoluciones (anti-robo) ──
+const AUD_ICON={'Anulación de ticket':'🗑️','Descuento':'🏷️','Devolución':'↩️'};
+function renderAudit(rows){
+  const el=$('#auditList');
+  const hoy=todayStr();
+  const list=(rows||[]).filter(a=>fechaKey(a)===hoy);
+  if(!list.length){ el.innerHTML='<div class="empty">Sin movimientos hoy 👍</div>'; return; }
+  el.innerHTML='';
+  list.forEach(a=>{
+    const div=document.createElement('div'); div.className='row';
+    div.innerHTML=`<span style="font-size:18px;min-width:24px;text-align:center">${AUD_ICON[String(a.tipo)]||'•'}</span>
+      <div class="who"><b>${esc(a.tipo||'—')}</b><span>${esc(a.empleado||'—')} · ${esc(a.hora||'')}${a.detalle?' · '+esc(a.detalle):''}</span></div>
+      <div class="amt" style="color:var(--red)">${a.montoUsd>0?'-'+fmtUsd(a.montoUsd):''}</div>`;
+    if(isDev) div.appendChild(mkDelBtn('audit', a.id, `el registro "${a.tipo}" de ${a.empleado||'—'}`));
+    el.appendChild(div);
+  });
+}
+function renderSales(rows){
+  const el=$('#salesList');
+  if(!rows.length){ el.innerHTML='<div class="empty">Sin ventas hoy todavía.</div>'; return; }
+  el.innerHTML='';
+  rows.forEach(s=>{
+    const isBar=String(s.tipo)==='Bar';
+    const div=document.createElement('div'); div.className='row';
+    div.innerHTML=`
+      <span class="time">${esc(s.hora)}</span>
+      <span class="tag ${isBar?'bar':'gaming'}">${isBar?'BAR':'JUEGO'}</span>
+      <div class="who"><b>${esc(s.cliente||'—')}</b><span>${esc(s.estacion)}${s.metodo?' · '+esc(s.metodo):''}</span></div>
+      <div class="amt">${fmtUsd(s.totalUsd)}<small>${fmtBs(s.totalBs)}</small></div>`;
+    if(isDev) div.appendChild(mkDelBtn('sales', s.id, `la venta de ${s.cliente||'—'} (${fmtUsd(s.totalUsd)})`));
+    el.appendChild(div);
+  });
+}
+// Indicador de arqueo del turno: ✓ cuadró / 📉 faltó / 📈 sobró + empleado
+function arqueoTag(c){
+  const emp=c.empleado?('👤 '+esc(c.empleado)):'';
+  const dif=c.arqueoDifBs;
+  if(dif===''||dif===null||dif===undefined||isNaN(+dif)) return emp;
+  const d=+dif;
+  let tag;
+  if(Math.abs(d)<=100) tag='<span style="color:var(--green);font-weight:700">✓ Cuadró</span>';
+  else if(d<0) tag='<span style="color:var(--red);font-weight:800">📉 Faltó '+fmtBs(Math.abs(d))+'</span>';
+  else tag='<span style="color:var(--gold);font-weight:700">📈 Sobró '+fmtBs(Math.abs(d))+'</span>';
+  return (emp?emp+' · ':'')+tag;
+}
+function renderClosures(rows){
+  const el=$('#closeList');
+  if(!rows.length){ el.innerHTML='<div class="empty">Sin cierres aún.</div>'; return; }
+  el.innerHTML='';
+  rows.forEach(c=>{
+    const div=document.createElement('div'); div.className='cl-row';
+    div.innerHTML=`<div class="d">${esc(fechaKey(c))}<small>${c.cobros||0} cobros · ${fmtBs(c.totalBs)}</small><small>${arqueoTag(c)}</small></div>
+      <div class="v">${fmtUsd(c.totalUsd)}</div>`;
+    if(isDev) div.appendChild(mkDelBtn('closures', c.id, `el cierre del ${c.fecha||''}`));
+    el.appendChild(div);
+  });
+}
+
+/* ── render: MES ── */
+function renderMonth(closures, hoyLive){
+  const sum=k=>closures.reduce((a,c)=>a+(+c[k]||0),0);
+  const monthName=new Date().toLocaleDateString('es-VE',{month:'long',year:'numeric'});
+  $('#mLbl').textContent='Total de '+monthName;
+  $('#mTotalUsd').textContent=fmtUsd(sum('totalUsd'));
+  $('#mTotalBs').textContent=fmtBs(sum('totalBs'));
+  $('#mDays').textContent=closures.length;
+  $('#mCobros').textContent=closures.reduce((a,c)=>a+(+c.cobros||0),0)+' cobros';
+  $('#mGaming').textContent=fmtUsd(sum('gamingUsd'));
+  $('#mFood').textContent=fmtUsd(sum('comidaUsd'));
+
+  const el=$('#monthList');
+  if(!closures.length){
+    const liveUsd=(hoyLive||[]).reduce((a,s)=>a+(+s.totalUsd||0),0);
+    el.innerHTML='<div class="empty">Aún no hay cierres este mes.'
+      +(liveUsd?'<br>Hoy en curso: '+fmtUsd(liveUsd)+' (sin cerrar).':'')+'</div>';
+    return;
+  }
+  el.innerHTML='';
+  closures.forEach(c=>{
+    const div=document.createElement('div'); div.className='cl-row';
+    div.innerHTML=`<div class="d">${esc(fechaKey(c))}
+        <small>${c.cobros||0} cobros · 🎮 ${fmtUsd(c.gamingUsd)} · 🍔 ${fmtUsd(c.comidaUsd)}</small><small>${arqueoTag(c)}</small></div>
+      <div class="v">${fmtUsd(c.totalUsd)}<br><small style="color:var(--dim);font-weight:400">${fmtBs(c.totalBs)}</small></div>`;
+    if(isDev) div.appendChild(mkDelBtn('closures', c.id, `el cierre del ${c.fecha||''}`));
+    el.appendChild(div);
+  });
+}
+
+/* ── developer: borrado seguro (POST con la contraseña de developer) ── */
+function mkDelBtn(table, id, label){
+  const b=document.createElement('button');
+  b.className='del'; b.textContent='🗑'; b.title='Borrar (solo developer)';
+  b.onclick=async (e)=>{
+    e.stopPropagation();
+    if(!confirm('¿Borrar '+label+'?\n\nEsto es permanente y solo lo puede hacer el developer.')) return;
+    b.disabled=true;
+    try{
+      const res=await fetch(WEBAPP_URL,{
+        method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({action:'delete', pw:PW, table, id})
+      });
+      const out=await res.json();
+      if(!out.ok) throw new Error(out.error||'error');
+      load();
+    }catch(err){ alert('No se pudo borrar: '+err.message); b.disabled=false; }
+  };
+  return b;
+}
+
+boot();
+</script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>DiverZona CHV · Pedidos</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--bg:#ece8dd;--panel:#f4f1e8;--panel2:#e7e2d4;--line:#d6d0c0;--line2:#c4bda9;--ink:#1b1b1b;--ink2:#403d36;--muted:#8a8473;--dim:#a39c89;
+  --accent:#c0392b;--accent2:#2f7d4f;--gold:#d99e2b;--bad:#c0392b;--good:#2f7d4f;--red:#c0392b;--green:#2f7d4f;
+  --mono:'Space Mono',ui-monospace,monospace;--display:'Archivo',system-ui,sans-serif;--sans:'Archivo',system-ui,sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.hide{display:none!important}
+input,button{font-family:var(--sans)}
+
+header{display:flex;align-items:flex-end;gap:12px;margin-bottom:16px;border-bottom:3px solid var(--ink);padding-bottom:12px}
+.brand{font-family:var(--display);font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:-.02em;line-height:.92}.brand b{color:var(--red)}
+.brand small{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-top:4px}
+.hbtns{margin-left:auto;display:flex;gap:8px;align-items:center}
+.icon-btn{background:transparent;border:1.5px solid var(--ink);color:var(--ink);border-radius:6px;width:40px;height:40px;font-size:17px;cursor:pointer}
+.live{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}.live .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--good);margin-right:5px}
+
+.tabs{display:flex;gap:6px;background:transparent;border:0;padding:0;margin-bottom:16px;max-width:360px}
+.tab{flex:1;text-align:center;padding:11px;border-radius:6px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink);cursor:pointer;border:1.5px solid var(--ink);background:transparent}
+.tab.on{background:var(--ink);color:var(--panel)}
+
+.ordgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.ord{background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--ink);border-radius:5px;padding:16px;position:relative;transition:.2s}
+.ord.nuevo{border-top-color:var(--green);box-shadow:0 0 0 2px rgba(47,125,79,.25)}
+.ord.flash{animation:flash 1s ease 3}
+@keyframes flash{0%,100%{box-shadow:0 0 0 2px rgba(47,125,79,.25)}50%{box-shadow:0 0 0 4px rgba(47,125,79,.55),0 6px 24px rgba(47,125,79,.3)}}
+.ord-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
+.ord-mesa{font-family:var(--display);font-size:20px;font-weight:900;text-transform:uppercase}.ord-mesa span{color:var(--red)}
+.ord-time{font-family:var(--mono);font-size:11px;color:var(--dim);text-align:right}
+.ord-who{font-size:13px;color:var(--ink2);margin-bottom:10px;font-weight:600}
+.ord-items{font-size:14px;line-height:1.7;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:10px 12px;margin-bottom:12px;font-weight:600}
+.ord-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.ord-tot{font-family:var(--display);font-weight:900;font-size:19px;color:var(--green)}.ord-tot small{display:block;font-size:11px;color:var(--dim);font-family:var(--mono);font-weight:400}
+.ord-pay{font-family:var(--mono);font-size:10px;font-weight:700;padding:4px 9px;border-radius:4px;background:var(--panel2);text-align:right;border:1px solid var(--line)}
+.ord-pay.pm{background:rgba(47,125,79,.14);color:var(--green);border-color:rgba(47,125,79,.3)}
+.ord-ref{font-family:var(--mono);font-size:11px;color:var(--gold);margin-top:3px}
+.ord-btn{width:100%;background:var(--green);color:#fff;border:0;border-radius:6px;padding:13px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;font-size:13px;cursor:pointer;box-shadow:0 4px 0 #225c3a}
+.ord-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #225c3a}
+.ord.atendido{opacity:.55}
+.badge-new{position:absolute;top:-10px;left:14px;background:var(--red);color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px}
+.sec{font-family:var(--display);font-size:12px;color:var(--red);text-transform:uppercase;letter-spacing:1px;font-weight:800;margin:22px 2px 10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.empty{text-align:center;color:var(--muted);padding:50px 16px;font-size:15px;font-family:var(--mono)}
+
+/* login */
+.login{max-width:380px;margin:13vh auto 0;padding:24px}
+.login .brand{font-size:28px;text-align:center}
+.login p{text-align:center;color:var(--ink2);font-size:14px;margin:14px 0 22px}
+.fld{margin-bottom:13px}.fld label{display:block;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:7px;font-weight:700}
+input{width:100%;background:var(--panel);border:1.5px solid var(--line2);color:var(--ink);border-radius:6px;padding:15px 16px;font-size:17px;font-weight:600;outline:none}
+input:focus{border-color:var(--ink)}
+.btn{width:100%;background:var(--red);color:#fff;border:0;border-radius:6px;padding:16px;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;box-shadow:0 4px 0 #8f291f}.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #8f291f}.btn:disabled{opacity:.5;box-shadow:none}
+.err{color:var(--bad);font-family:var(--mono);font-size:13px;text-align:center;margin-top:12px;min-height:18px}
+
+/* QR */
+.qrcfg{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px}
+.qrcfg .fld{margin:0;flex:1;min-width:160px}
+.qrgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.qrcard{background:#fff;border:1px solid var(--ink);border-radius:6px;padding:14px;text-align:center;color:var(--ink)}
+.qrcard img{width:100%;max-width:160px;height:auto}
+.qrcard .ql{font-family:var(--display);font-weight:900;font-size:16px;margin-top:6px;text-transform:uppercase}
+.note{font-size:13px;color:var(--ink2);line-height:1.6;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:5px;padding:12px 14px;margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginView" class="login">
+  <div class="brand"><b>Diver</b>-Zona CHV<small style="display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px">Tablero de pedidos</small></div>
+  <p>Ingresa la contraseña para ver los pedidos del local.</p>
+  <div class="fld"><label>Contraseña</label><input id="pass" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+  <button id="loginBtn" class="btn">Entrar</button>
+  <div id="loginErr" class="err"></div>
+</div>
+
+<!-- APP -->
+<div id="app" class="wrap hide">
+  <header>
+    <div class="brand"><b>Diver</b>-Zona CHV<small>Pedidos en vivo</small></div>
+    <div class="hbtns">
+      <span class="live"><span class="dot"></span><span id="liveTxt">—</span></span>
+      <button class="icon-btn" id="callBell" title="Mesas que llaman" style="position:relative">🔔<span id="callBadge" style="position:absolute;top:-5px;right:-5px;background:var(--bad);color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:none;align-items:center;justify-content:center;padding:0 4px">0</span></button>
+      <button class="icon-btn" id="soundBtn" title="Activar/silenciar sonido">🔊</button>
+      <button class="icon-btn" id="refreshBtn" title="Actualizar">↻</button>
+      <button class="icon-btn" id="logoutBtn" title="Salir">⎋</button>
+    </div>
+  </header>
+
+  <!-- panel de llamadas (campana) -->
+  <div id="callPanel" class="hide" style="position:fixed;top:62px;right:14px;z-index:50;width:300px;max-width:92vw;max-height:70vh;overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 36px rgba(0,0,0,.55);padding:13px"></div>
+
+  <div class="tabs">
+    <button class="tab on" id="tabOrders">📋 Pedidos</button>
+    <button class="tab" id="tabQR">🔳 QR de mesas</button>
+  </div>
+
+  <!-- PEDIDOS (solo pedidos; las llamadas van a la campana 🔔) -->
+  <div id="viewOrders">
+    <div class="sec" id="secNuevo">🆕 Por preparar</div>
+    <div class="ordgrid" id="list-nuevo"><div class="empty">Cargando…</div></div>
+    <div class="sec">🍳 En preparación</div>
+    <div class="ordgrid" id="list-prep"></div>
+    <div class="sec">✅ Listos para entregar</div>
+    <div class="ordgrid" id="list-listo"></div>
+  </div>
+
+  <!-- QR -->
+  <div id="viewQR" class="hide">
+    <div class="note">Genera un <b>QR por mesa</b>. El cliente lo escanea y entra directo al menú con su mesa ya puesta. Imprímelos y pégalos en cada mesa.</div>
+    <div class="qrcfg">
+      <div class="fld"><label>Link de la app del cliente (cliente.html)</label><input id="qrUrl" type="text" placeholder="https://diverzona-pedir.netlify.app"></div>
+      <div class="fld" style="flex:0 0 130px"><label>¿Cuántas mesas?</label><input id="qrCount" type="text" inputmode="numeric" placeholder="10"></div>
+      <button class="btn" style="width:auto;padding:15px 22px" id="qrGen">Generar</button>
+    </div>
+    <div class="qrgrid" id="qrGrid"></div>
+  </div>
+</div>
+
+<script>
+const WEBAPP_URL  = 'https://script.google.com/macros/s/AKfycbxZSl3yYlPSahxF3K1iKe6ItMfznhglPdJ2B8cHMNFlJHWwhWdChQK8i6Wst3V8WQHlKQ/exec';
+const WRITE_TOKEN = 'dz-pos-2024';
+
+const $=s=>document.querySelector(s);
+const fmtUsd=n=>'$'+(+n||0).toFixed(2);
+const fmtBs=n=>'Bs '+Math.round(+n||0).toLocaleString('es-VE');
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const todayStr=()=>new Date().toLocaleDateString('es-VE');
+// items pueden venir como JSON [{name,qty,...}] (nuevo) o texto (viejo)
+function fmtItems(s){ try{ const a=JSON.parse(s); if(Array.isArray(a)) return a.map(i=>`${i.qty}× ${esc(i.name)}`).join('<br>'); }catch(e){} return esc(s); }
+let PW='', timer=null, soundOn=true, seen=new Set(), firstLoad=true;
+
+/* login */
+$('#loginBtn').onclick=async()=>{
+  PW=$('#pass').value.trim(); if(!PW){$('#loginErr').textContent='Escribe la contraseña.';return;}
+  $('#loginBtn').disabled=true; $('#loginErr').textContent='Verificando…';
+  try{ const r=await fetch(WEBAPP_URL+'?pw='+encodeURIComponent(PW)); const d=await r.json();
+    if(!d.ok||(d.role!=='view'&&d.role!=='dev')) throw new Error('pw');
+    sessionStorage.setItem('dz-ped-pw',PW); showApp(d);
+  }catch(e){ $('#loginErr').textContent = e.message==='pw'?'Contraseña incorrecta (o sin permiso de ver).':'Sin conexión.'; }
+  finally{ $('#loginBtn').disabled=false; }
+};
+$('#pass').addEventListener('keydown',e=>{if(e.key==='Enter')$('#loginBtn').click();});
+$('#logoutBtn').onclick=()=>{ sessionStorage.removeItem('dz-ped-pw'); clearInterval(timer); location.reload(); };
+$('#refreshBtn').onclick=()=>load();
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden && PW) load(); });   // refresca al volver a la pestaña
+$('#soundBtn').onclick=()=>{ soundOn=!soundOn; $('#soundBtn').style.opacity=soundOn?'1':'.4'; if(soundOn)beep(); };
+$('#tabOrders').onclick=()=>swTab('o');
+$('#tabQR').onclick=()=>swTab('q');
+function swTab(t){ $('#tabOrders').classList.toggle('on',t==='o'); $('#tabQR').classList.toggle('on',t==='q'); $('#viewOrders').classList.toggle('hide',t!=='o'); $('#viewQR').classList.toggle('hide',t!=='q'); }
+
+function showApp(d){ $('#loginView').classList.add('hide'); $('#app').classList.remove('hide'); render(d); clearInterval(timer); timer=setInterval(()=>{ if(!document.hidden) load(); },10000); }
+async function load(){
+  try{ const r=await fetch(WEBAPP_URL+'?pw='+encodeURIComponent(PW)); const d=await r.json(); if(!d.ok)throw 0;
+    render(d); $('#liveTxt').textContent='Actualizado '+new Date().toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){ $('#liveTxt').textContent='Sin conexión…'; }
+}
+
+function toast(m){
+  let t=document.getElementById('kdsToast');
+  if(!t){ t=document.createElement('div'); t.id='kdsToast';
+    t.style.cssText='position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--panel2,#112459);border:1.5px solid var(--bad,#ff4d61);color:#fff;padding:14px 22px;border-radius:14px;font-weight:700;font-size:15px;box-shadow:0 6px 24px rgba(0,0,0,.5);z-index:80;opacity:0;transition:.25s;max-width:90vw;text-align:center;pointer-events:none';
+    document.body.appendChild(t); }
+  t.textContent=m; t.style.opacity='1'; clearTimeout(t._t); t._t=setTimeout(()=>{ t.style.opacity='0'; }, 3200);
+}
+
+function render(d){
+  const today=todayStr();
+  const orders=(d.orders||[]).filter(o=>{ const dk=o.fecha&&!String(o.fecha).includes('T')?o.fecha:new Date(o.created_at).toLocaleDateString('es-VE'); return dk===today; })
+    .sort((a,b)=>String(a.created_at||'').localeCompare(String(b.created_at||'')));   // más viejo primero (el primero que entró se prepara primero)
+
+  CALLS=orders.filter(o=>o.estado==='llamada');
+  const porPrep=orders.filter(o=>o.estado==='nuevo'||o.estado==='atendido');
+  const enPrep =orders.filter(o=>o.estado==='preparando');
+  const listos =orders.filter(o=>o.estado==='listo');
+  const pend=CALLS.length+porPrep.length+enPrep.length;
+  document.title=(pend?'('+pend+') ':'')+'Cocina · DiverZona';
+
+  // pedidos nuevos → sonido
+  let hayPedido=false;
+  porPrep.forEach(o=>{ if(!seen.has(o.id)){ seen.add(o.id); if(!firstLoad)hayPedido=true; } });
+  // LLAMADAS nuevas → sonido + campana + aviso de la mesa
+  let nuevaLlamada=null;
+  CALLS.forEach(o=>{ if(!seenCalls.has(o.id)){ seenCalls.add(o.id); if(!firstLoad)nuevaLlamada=o; } });
+  if((hayPedido||nuevaLlamada) && soundOn) beep();
+  if(nuevaLlamada){ flashBell(); toast('🔔 Mesa '+esc(nuevaLlamada.mesa)+' necesita atención'); }
+
+  renderBell();   // ← las llamadas van a la campana, no al tablero
+
+  fill('list-nuevo', porPrep, 'nuevo', 'Sin pedidos por preparar. 🔔');
+  fill('list-prep',  enPrep,  'prep', '—');
+  fill('list-listo', listos,  'listo','—');
+  firstLoad=false;
+  tickTimers();
+}
+
+/* ── Campana de llamadas ── */
+let CALLS=[], seenCalls=new Set(), callPanelOpen=false;
+function renderBell(){
+  const badge=$('#callBadge');
+  if(CALLS.length){ badge.textContent=CALLS.length; badge.style.display='flex'; }
+  else { badge.style.display='none'; }
+  if(callPanelOpen) renderCallPanel();
+}
+function flashBell(){ const b=$('#callBell'); if(!b)return; b.style.background='var(--bad)'; setTimeout(()=>{b.style.background='';},1400); }
+function renderCallPanel(){
+  const p=$('#callPanel');
+  let h='<div style="font-weight:800;font-size:15px;margin-bottom:10px">🔔 Mesas que llaman</div>';
+  if(!CALLS.length){ h+='<div style="text-align:center;color:var(--muted);padding:18px;font-size:14px">Ninguna mesa llamando 👌</div>'; }
+  else CALLS.forEach(o=>{
+    h+='<div class="cp-row" data-id="'+esc(o.id)+'" style="display:flex;align-items:center;gap:8px;background:rgba(255,77,97,.13);border:1px solid rgba(255,77,97,.35);border-radius:11px;padding:10px 12px;margin-bottom:8px"><div style="flex:1;min-width:0"><b style="color:var(--bad);font-size:16px">Mesa '+esc(o.mesa)+'</b><div style="font-size:11px;color:var(--muted)">necesita atención · '+esc(o.hora||'')+'</div></div><button class="cp-ok" style="background:var(--good);color:#fff;border:0;border-radius:6px;padding:8px 13px;font-weight:800;font-size:13px;cursor:pointer;flex:none">✓ Voy</button></div>';
+  });
+  p.innerHTML=h;
+  p.querySelectorAll('.cp-row').forEach(div=>{ const o=CALLS.find(x=>String(x.id)===div.dataset.id);
+    const ok=div.querySelector('.cp-ok'); if(ok)ok.onclick=()=>{ setEstado(o,'entregado',ok); CALLS=CALLS.filter(x=>x!==o); renderBell(); }; });
+}
+$('#callBell').onclick=()=>{ callPanelOpen=!callPanelOpen; const p=$('#callPanel'); p.classList.toggle('hide',!callPanelOpen); if(callPanelOpen) renderCallPanel(); };
+function fill(id, arr, stage, emptyMsg){
+  const el=$('#'+id);
+  el.innerHTML = arr.length?'':'<div class="empty">'+emptyMsg+'</div>';
+  arr.forEach(o=>el.appendChild(card(o,stage)));
+}
+
+// stage: 'nuevo' (por preparar) | 'prep' (en preparación) | 'listo'
+function card(o,stage){
+  const div=document.createElement('div'); div.className='ord '+(stage==='nuevo'?'nuevo':(stage==='listo'?'atendido':''));
+  const isPM=String(o.metodo||'').includes('Móvil');
+  let btnTxt='', next='';
+  if(stage==='nuevo'){ btnTxt='▶ Empezar a preparar'; next='preparando'; }
+  else if(stage==='prep'){ btnTxt='✅ Listo'; next='listo'; }
+  else { btnTxt='📦 Entregado'; next='entregado'; }
+  div.innerHTML=`${stage==='nuevo'?'<span class="badge-new">Nuevo</span>':''}
+    <div class="ord-top"><div class="ord-mesa">Mesa <span>${esc(o.mesa)}</span></div>
+      <div class="ord-time">🕒 <span class="kt" data-since="${esc(o.created_at)}"></span></div></div>
+    <div class="ord-who">👤 ${esc(o.cliente||'Cliente')}${o.telefono?' · '+esc(o.telefono):''}</div>
+    <div class="ord-items">${fmtItems(o.items)}</div>
+    <div class="ord-foot">
+      <div class="ord-tot">${fmtUsd(o.totalUsd)}<small>${fmtBs(o.totalBs)}</small></div>
+      <div style="text-align:right"><span class="ord-pay ${isPM?'pm':''}">${esc(o.metodo)}</span>${o.refPago?`<div class="ord-ref">Ref: ${esc(o.refPago)}</div>`:''}</div>
+    </div>
+    <button class="ord-btn">${btnTxt}</button>`;
+  div.querySelector('.ord-btn').onclick=(ev)=>setEstado(o, next, ev.target);
+  return div;
+}
+
+async function setEstado(o, estado, btn){
+  if(btn){ btn.disabled=true; btn.textContent='…'; }
+  try{
+    const row={...o, estado};
+    const r=await fetch(WEBAPP_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'upsert',token:WRITE_TOKEN,table:'orders',row})});
+    const out=await r.json(); if(!out.ok)throw new Error(out.error||'err');
+    load();
+  }catch(e){ alert('No se pudo: '+e.message); if(btn)btn.disabled=false; }
+}
+
+/* cronómetro en vivo de cada tarjeta */
+function tickTimers(){
+  document.querySelectorAll('.kt').forEach(el=>{
+    const t=new Date(el.dataset.since).getTime(); if(isNaN(t))return;
+    const m=Math.max(0,Math.floor((Date.now()-t)/60000));
+    el.textContent = m<60 ? (m+' min') : (Math.floor(m/60)+'h '+(m%60)+'m');
+    const card=el.closest('.ord'); if(card){ card.style.borderColor = m>=15?'var(--bad)':(m>=8?'var(--gold)':''); }
+  });
+}
+setInterval(tickTimers, 1000);
+
+/* beep con Web Audio (sin archivos) */
+let actx=null;
+function beep(){ try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); const o=actx.createOscillator(),g=actx.createGain();
+  o.connect(g);g.connect(actx.destination);o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(.18,actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+.45);o.start();o.stop(actx.currentTime+.45);
+  const o2=actx.createOscillator();o2.connect(g);o2.frequency.setValueAtTime(1320,actx.currentTime+.12);o2.start(actx.currentTime+.12);o2.stop(actx.currentTime+.45);
+}catch(e){} }
+
+/* QR de mesas */
+$('#qrGen').onclick=()=>{
+  let base=$('#qrUrl').value.trim(); const n=parseInt($('#qrCount').value)||0;
+  if(!base){alert('Pega el link de la app del cliente');return;}
+  if(!/^https?:\/\//.test(base)) base='https://'+base;
+  base=base.replace(/\/+$/,''); if(!/\.html$/.test(base) && !base.endsWith('/')) {} // se asume index
+  localStorage.setItem('dz-ped-qrurl',base);
+  const g=$('#qrGrid'); g.innerHTML='';
+  for(let i=1;i<=n;i++){
+    const url=base+(base.includes('?')?'&':'?')+'mesa='+i;
+    const qr='https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data='+encodeURIComponent(url);
+    const c=document.createElement('div'); c.className='qrcard';
+    c.innerHTML=`<img src="${qr}" alt="QR Mesa ${i}"><div class="ql">Mesa ${i}</div>`;
+    g.appendChild(c);
+  }
+};
+if(localStorage.getItem('dz-ped-qrurl')) $('#qrUrl').value=localStorage.getItem('dz-ped-qrurl');
+
+/* arranque */
+const saved=sessionStorage.getItem('dz-ped-pw');
+if(saved){ PW=saved; load().then(()=>{ $('#loginView').classList.add('hide'); $('#app').classList.remove('hide'); clearInterval(timer); timer=setInterval(()=>{ if(!document.hidden) load(); },10000); }); }
+</script>
+</body>
+</html>

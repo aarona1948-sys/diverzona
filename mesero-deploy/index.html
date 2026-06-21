@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>DiverZona CHV · Mesero</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{
+  --paper:#ece8dd; --paper2:#f4f1e8; --soft:#e7e2d4; --line:#d6d0c0; --line2:#c4bda9;
+  --ink:#1b1b1b; --ink2:#403d36; --muted:#8a8473;
+  --red:#c0392b; --green:#2f7d4f; --blue:#2d6ca8; --gold:#d99e2b; --bad:#c0392b; --good:#2f7d4f;
+  --display:'Archivo',system-ui,sans-serif; --sans:'Archivo',system-ui,sans-serif; --mono:'Space Mono',ui-monospace,monospace;
+  --shadow:0 2px 0 rgba(27,27,27,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;
+  -webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+.hide{display:none!important}
+button{font-family:var(--sans)}
+
+/* LOGIN */
+.login{max-width:400px;margin:8vh auto 0;padding:24px;text-align:center}
+.login .logo{width:92px;height:92px;border-radius:50%;border:2.5px solid var(--ink);object-fit:cover;margin:0 auto 16px;display:block;background:var(--paper2)}
+.brand{font-family:var(--display);font-weight:900;font-size:30px;letter-spacing:-.025em;text-transform:uppercase;color:var(--ink);line-height:.9}
+.brand b{color:var(--red)}
+.brand small{display:block;font-family:var(--mono);font-weight:700;font-size:11px;color:var(--ink2);letter-spacing:.18em;text-transform:uppercase;margin-top:8px}
+.login p{text-align:center;color:var(--ink2);font-size:14px;margin:14px 0 22px}
+.fld{margin-bottom:14px;text-align:left}
+.fld label{display:block;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;font-weight:700}
+input{width:100%;background:var(--paper2);border:1.5px solid var(--line2);color:var(--ink);
+  border-radius:6px;padding:15px 16px;font-size:17px;font-weight:600;font-family:var(--sans);outline:none}
+input:focus{border-color:var(--ink)}
+.btn{width:100%;background:var(--red);color:#fff;border:0;border-radius:6px;
+  padding:16px;font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:.1s;box-shadow:0 4px 0 #8f291f}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #8f291f}
+.btn:disabled{opacity:.5;box-shadow:none}
+.btn-orange{background:var(--green);box-shadow:0 4px 0 #225c3a}.btn-orange:active{box-shadow:0 2px 0 #225c3a}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);box-shadow:none}.btn-ghost:active{transform:translateY(1px)}
+.err{color:var(--bad);font-size:13px;font-family:var(--mono);text-align:center;margin-top:12px;min-height:18px}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:11px;
+  padding:calc(env(safe-area-inset-top) + 11px) 14px 11px;
+  background:var(--paper);border-bottom:3px solid var(--ink);box-shadow:0 5px 14px rgba(27,27,27,.07)}
+.h-logo{width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);object-fit:cover;flex:none;background:var(--paper2)}
+.h-brand{font-family:var(--display);font-weight:900;font-size:17px;text-transform:uppercase;letter-spacing:-.02em;color:var(--ink)}.h-brand b{color:var(--red)}
+.h-emp{font-family:var(--mono);font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.h-rate{margin-left:auto;text-align:right;font-family:var(--mono);font-size:9px;color:var(--muted);line-height:1.3;text-transform:uppercase;letter-spacing:1px;cursor:pointer}
+.h-rate b{display:block;font-size:14px;color:var(--ink);font-weight:700}
+.icon-btn{background:transparent;border:1.5px solid var(--ink);color:var(--ink);border-radius:6px;
+  width:38px;height:38px;font-size:16px;display:grid;place-items:center;cursor:pointer}
+
+/* TABS */
+.cats{display:flex;gap:8px;overflow-x:auto;padding:13px 14px 12px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:none;padding:9px 16px;border-radius:4px;border:1.5px solid var(--ink);
+  background:transparent;color:var(--ink);font-weight:800;font-size:12.5px;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:.12s}
+.cat.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding:2px 14px 220px}
+.prod{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+  background:var(--paper2);border:1px solid var(--line);border-top:4px solid var(--ink);border-radius:4px;padding:18px 12px;
+  min-height:118px;cursor:pointer;text-align:center;box-shadow:var(--shadow);transition:transform .1s}
+.prod:active{transform:scale(.96)}
+.prod.gaming{background:#f4efe0;border-top-color:var(--gold)}
+.prod.gaming .p{color:var(--gold)}
+.prod .e{font-size:38px;line-height:1}
+.prod .n{font-size:13px;font-weight:800;line-height:1.22;color:var(--ink);letter-spacing:-.01em}
+.prod .p{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--green);letter-spacing:-.02em}
+.prod .badge{position:absolute;top:-9px;right:-9px;background:var(--red);color:#fff;font-family:var(--mono);
+  font-size:13px;font-weight:700;min-width:26px;height:26px;border-radius:6px;display:grid;place-items:center;padding:0 6px;box-shadow:0 3px 0 #8f291f}
+
+/* CART (sticky bottom) */
+.cart{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--paper2);
+  border-top:3px solid var(--ink);box-shadow:0 -6px 24px rgba(27,27,27,.14);
+  padding:12px 14px calc(env(safe-area-inset-bottom) + 12px);max-height:62vh;display:flex;flex-direction:column}
+.cart-items{overflow-y:auto;margin-bottom:10px}
+.ci{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line2)}
+.ci:last-child{border-bottom:0}
+.ci .nm{flex:1;min-width:0;font-size:14px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ci .nm small{display:block;color:var(--muted);font-weight:500;font-size:11px;font-family:var(--mono)}
+.qbtn{width:34px;height:34px;border-radius:5px;border:1.5px solid var(--ink);background:var(--paper);
+  color:var(--ink);font-size:19px;font-weight:700;cursor:pointer;flex:none}
+.qn{min-width:24px;text-align:center;font-weight:800;font-family:var(--mono)}
+.ci .pr{font-weight:700;min-width:54px;text-align:right;font-size:14px;color:var(--ink);font-family:var(--mono)}
+.cart-empty{text-align:center;color:var(--muted);padding:20px;font-size:13.5px;font-family:var(--mono)}
+.cart-foot{display:flex;align-items:center;gap:12px}
+.cart-tot{flex:1}
+.cart-tot .u{font-family:var(--display);font-size:26px;font-weight:900;color:var(--ink);letter-spacing:-.02em}
+.cart-tot .b{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400}
+.cart-go{background:var(--red);color:#fff;border:0;border-radius:6px;padding:16px 24px;
+  font-size:15px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;box-shadow:0 4px 0 #8f291f}
+.cart-go:active{transform:translateY(2px);box-shadow:0 2px 0 #8f291f}
+.cart-go:disabled{opacity:.4;box-shadow:none}
+
+/* SHEET (checkout / modal) */
+.scrim{position:fixed;inset:0;background:rgba(27,27,27,.5);z-index:40;display:none;align-items:flex-end}
+.scrim.on{display:flex}
+.sheet{background:var(--paper);width:100%;border-radius:14px 14px 0 0;border-top:4px solid var(--ink);padding:20px 18px calc(env(safe-area-inset-bottom) + 20px);max-height:88vh;overflow-y:auto}
+.sheet h3{font-family:var(--display);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:6px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.sheet .tot{font-family:var(--display);font-size:34px;font-weight:900;color:var(--ink);margin:10px 0 2px;letter-spacing:-.02em}
+.sheet .totb{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:16px}
+.pm{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0 16px}
+.pm button{padding:13px 5px;border-radius:6px;border:1.5px solid var(--line2);background:var(--paper2);
+  color:var(--ink2);font-weight:800;font-size:12px;cursor:pointer}
+.pm button.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.row2{display:flex;gap:10px;margin-top:6px}
+
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 90px);transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:var(--paper);padding:14px 22px;border-radius:6px;
+  font-weight:700;font-size:14px;box-shadow:0 8px 28px rgba(27,27,27,.3);opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.bad{background:var(--red)}
+.sync{position:fixed;left:12px;bottom:calc(env(safe-area-inset-bottom) + 78px);z-index:25;font-family:var(--mono);font-size:10px;font-weight:700;
+  padding:7px 12px;border-radius:5px;background:var(--paper2);border:1px solid var(--ink);color:var(--ink);box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+
+<!-- ░░ LOGIN ░░ -->
+<div id="loginView" class="login">
+  <img src="logo.png" class="logo" alt="DiverZona" onerror="this.style.display='none'">
+  <div class="brand"><b>Diver</b>-Zona CHV<small>App de Mesero</small></div>
+  <p>Ingresa la contraseña de empleado para tomar pedidos.</p>
+  <div class="fld"><label>Contraseña de empleado</label><input id="pass" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+  <button id="loginBtn" class="btn">Entrar</button>
+  <div id="loginErr" class="err"></div>
+</div>
+
+<!-- ░░ NOMBRE DEL MESERO ░░ -->
+<div id="nameView" class="login hide">
+  <div class="brand"><b>Diver</b>-Zona CHV<small>¿Quién atiende?</small></div>
+  <p>Escribe tu nombre. Las ventas quedarán registradas a tu nombre.</p>
+  <div class="fld"><label>Tu nombre</label><input id="empName" type="text" placeholder="Ej. Carlos"></div>
+  <button id="nameBtn" class="btn btn-orange">Empezar a tomar pedidos</button>
+</div>
+
+<!-- ░░ APP ░░ -->
+<div id="app" class="hide">
+  <header>
+    <img src="logo.png" class="h-logo" alt="" onerror="this.style.display='none'">
+    <div>
+      <div class="h-brand"><b>Diver</b>-Zona CHV</div>
+      <div class="h-emp" id="hEmp">—</div>
+    </div>
+    <div class="h-rate" id="hRate" title="Tasa Bs/$ (toca para actualizar)">Tasa<b>—</b></div>
+    <button class="icon-btn" id="logoutBtn" title="Salir">⎋</button>
+  </header>
+
+  <div class="cats" id="cats"></div>
+  <div class="grid" id="grid"></div>
+
+  <!-- carrito -->
+  <div class="cart" id="cart">
+    <div class="cart-items" id="cartItems"><div class="cart-empty">Toca productos para armar el pedido 👆</div></div>
+    <div class="cart-foot">
+      <div class="cart-tot"><div class="u" id="cartUsd">$0.00</div><div class="b" id="cartBs">Bs 0</div></div>
+      <button class="cart-go" id="cartGo" disabled>Cobrar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ░░ CHECKOUT ░░ -->
+<div class="scrim" id="coScrim">
+  <div class="sheet">
+    <h3>Enviar pedido a la caja</h3>
+    <div class="tot" id="coTot">$0.00</div>
+    <div class="totb" id="coTotB">Bs 0</div>
+    <div class="fld"><label>Mesa o nombre del cliente</label><input id="coMesa" type="text" placeholder="Ej. Mesa 5 o Juan"></div>
+    <label style="font-size:12px;color:var(--muted);font-weight:600">Pago sugerido (lo cobra la caja)</label>
+    <div class="pm" id="pm">
+      <button data-m="Efectivo Bs" class="on">💵 Efectivo</button>
+      <button data-m="Pago Móvil">📲 P. Móvil</button>
+      <button data-m="Divisa $">💲 Divisa</button>
+    </div>
+    <div class="row2">
+      <button class="btn btn-ghost" id="coCancel">Cancelar</button>
+      <button class="btn" id="coConfirm">✓ Enviar a la caja</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="sync hide" id="syncBadge"></div>
+
+<script>
+/* ============================================================
+   CONFIG — misma URL y token del POS (el token solo ESCRIBE).
+   ============================================================ */
+const WEBAPP_URL  = 'https://script.google.com/macros/s/AKfycbxZSl3yYlPSahxF3K1iKe6ItMfznhglPdJ2B8cHMNFlJHWwhWdChQK8i6Wst3V8WQHlKQ/exec';
+const WRITE_TOKEN = 'dz-pos-2024';
+
+/* Menú (precios por defecto; se pueden ajustar luego para que igualen al POS) */
+const MENU = [
+  {cat:'🕹️ Juego', items:[
+    {id:'g1',name:'30 min · Juego',e:'🕹️',price:3,kind:'gaming'},
+    {id:'g2',name:'1h · Juego',e:'🕹️',price:5,kind:'gaming'},
+    {id:'g3',name:'2h · Juego',e:'🕹️',price:10,kind:'gaming'},
+    {id:'g4',name:'3h · Juego',e:'🕹️',price:15,kind:'gaming'},
+    {id:'g5',name:'30 min · Pool',e:'🎱',price:4,kind:'gaming'},
+    {id:'g6',name:'1h · Pool',e:'🎱',price:8,kind:'gaming'},
+    {id:'g7',name:'2h · Pool',e:'🎱',price:14,kind:'gaming'},
+  ]},
+  {cat:'🍺 Bebidas', items:[
+    {id:'b0',name:'Cerveza',e:'🍺',price:1.5,kind:'bebida'},
+    {id:'b1',name:'Refresco (405ml)',e:'🥤',price:1,kind:'bebida'},
+    {id:'b2',name:'Refresco pequeño',e:'🥤',price:1.5,kind:'bebida'},
+    {id:'b3',name:'Raspado',e:'🍧',price:1,kind:'bebida'},
+    {id:'b4',name:'Descorche Whisky',e:'🥃',price:15,kind:'bebida'},
+    {id:'b5',name:'Descorche Ron',e:'🥃',price:15,kind:'bebida'},
+  ]},
+  {cat:'🍿 Combos', items:[
+    {id:'c1',name:'Pokémon',e:'🍿',price:3,kind:'combo'},
+    {id:'c2',name:'Cotufas',e:'🍿',price:0.5,kind:'combo'},
+    {id:'c3',name:'Banderines',e:'🌭',price:3.5,kind:'combo'},
+    {id:'c4',name:'Mario Kart',e:'🌭',price:3,kind:'combo'},
+    {id:'c5',name:'Súper Mario',e:'🌭',price:3.5,kind:'combo'},
+  ]},
+  {cat:'🍔 Comidas', items:[
+    {id:'f1',name:'Mario Party (papas)',e:'🍟',price:4.5,kind:'comida'},
+    {id:'f2',name:'Luigi (papas+pollo)',e:'🍟',price:6,kind:'comida'},
+    {id:'f3',name:'FIFA 26 (tequeños)',e:'🧀',price:6,kind:'comida'},
+    {id:'f4',name:'Mortal Kombat (tequeños)',e:'🧀',price:7.5,kind:'comida'},
+    {id:'f5',name:'Gran Turismo (pastelitos pollo)',e:'🥟',price:5,kind:'comida'},
+    {id:'f6',name:'Smash Bros. (pastelitos carne)',e:'🥟',price:5,kind:'comida'},
+    {id:'f7',name:'GTA V (nuggets)',e:'🍗',price:7,kind:'comida'},
+    {id:'f8',name:'Fortnite (alitas)',e:'🍗',price:7,kind:'comida'},
+    {id:'f9',name:'Mario Bros (chupetas)',e:'🍭',price:8,kind:'comida'},
+    {id:'f10',name:'Minecraft (tenders)',e:'🍗',price:9,kind:'comida'},
+  ]},
+];
+
+const $=s=>document.querySelector(s);
+const fmtUsd=n=>'$'+(+n||0).toFixed(2);
+const fmtBs=n=>'Bs '+Math.round(+n||0).toLocaleString('es-VE');
+let RATE=parseFloat(localStorage.getItem('dz-m-rate'))||0;
+let EMP=localStorage.getItem('dz-m-emp')||'';
+let cart={}, curCat=0, payMethod='Efectivo Bs';
+
+function deviceId(){ let d=localStorage.getItem('dz-device-id'); if(!d){d=Date.now().toString(36)+Math.random().toString(36).slice(2,6);localStorage.setItem('dz-device-id',d);} return d; }
+function nextCtrl(){ let c=parseInt(localStorage.getItem('dz-m-ctrl')||'1'); localStorage.setItem('dz-m-ctrl',String(c+1)); return c; }
+function toast(m,bad){ const t=$('#toast'); t.textContent=m; t.className='toast on'+(bad?' bad':''); clearTimeout(t._t); t._t=setTimeout(()=>t.className='toast',2600); }
+
+/* ── LOGIN (verifica clave de empleado en el servidor) ── */
+$('#loginBtn').onclick=async()=>{
+  const pw=$('#pass').value.trim();
+  if(!pw){ $('#loginErr').textContent='Escribe la contraseña.'; return; }
+  $('#loginBtn').disabled=true; $('#loginErr').textContent='Verificando…';
+  try{
+    const r=await fetch(WEBAPP_URL+'?pw='+encodeURIComponent(pw));
+    const d=await r.json();
+    if(!d.ok) throw new Error('pw');
+    sessionStorage.setItem('dz-m-ok','1');
+    $('#loginErr').textContent='';
+    $('#loginView').classList.add('hide');
+    if(EMP) startApp(); else $('#nameView').classList.remove('hide');
+  }catch(e){ $('#loginErr').textContent = e.message==='pw'?'Contraseña incorrecta.':'Sin conexión. Reintenta.'; }
+  finally{ $('#loginBtn').disabled=false; }
+};
+$('#pass').addEventListener('keydown',e=>{if(e.key==='Enter')$('#loginBtn').click();});
+
+$('#nameBtn').onclick=()=>{
+  const n=$('#empName').value.trim(); if(!n){toast('Escribe tu nombre',true);return;}
+  EMP=n; localStorage.setItem('dz-m-emp',n);
+  $('#nameView').classList.add('hide'); startApp();
+};
+$('#logoutBtn').onclick=()=>{ sessionStorage.removeItem('dz-m-ok'); location.reload(); };
+
+function startApp(){
+  $('#app').classList.remove('hide');
+  $('#hEmp').textContent='👤 '+EMP;
+  renderCats(); renderGrid(); renderCart(); updateRateUI();
+  fetchRate(); flush(); updateSyncBadge();
+  setInterval(flush, 20000);
+}
+
+/* ── RATE ── */
+$('#hRate').onclick=()=>fetchRate(true);
+function updateRateUI(){ $('#hRate').innerHTML='Tasa<b>'+(RATE>0?RATE.toFixed(2):'tocar 🔄')+'</b>'; renderCart(); }
+async function fetchRate(manual){
+  try{
+    const r=await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+    const d=await r.json(); const v=parseFloat(d.promedio??d.promedioBCV);
+    if(v>1){ RATE=v; localStorage.setItem('dz-m-rate',String(v)); updateRateUI(); if(manual)toast('✓ Tasa BCV: Bs '+v.toFixed(2)); }
+  }catch(e){ if(manual){ const m=prompt('No se pudo traer la tasa. Escríbela manual (Bs por $):', RATE||''); const v=parseFloat((m||'').replace(',','.')); if(v>1){RATE=v;localStorage.setItem('dz-m-rate',String(v));updateRateUI();} } }
+}
+
+/* ── MENÚ ── */
+function renderCats(){
+  $('#cats').innerHTML='';
+  MENU.forEach((c,i)=>{ const b=document.createElement('button'); b.className='cat'+(i===curCat?' on':''); b.textContent=c.cat; b.onclick=()=>{curCat=i;renderCats();renderGrid();}; $('#cats').appendChild(b); });
+}
+function renderGrid(){
+  const g=$('#grid'); g.innerHTML='';
+  MENU[curCat].items.forEach(it=>{
+    const qty=cart[it.id]?cart[it.id].qty:0;
+    const b=document.createElement('button'); b.className='prod'+(it.kind==='gaming'?' gaming':'');
+    b.innerHTML=`${qty>0?`<span class="badge">${qty}</span>`:''}<span class="e">${it.e}</span><span class="n">${it.name}</span><span class="p">${fmtUsd(it.price)}</span>`;
+    b.onclick=()=>{ addToCart(it); };
+    g.appendChild(b);
+  });
+}
+function addToCart(it){ if(!cart[it.id])cart[it.id]={item:it,qty:0}; cart[it.id].qty++; renderGrid(); renderCart(); }
+function chgQty(id,d){ if(!cart[id])return; cart[id].qty+=d; if(cart[id].qty<=0)delete cart[id]; renderGrid(); renderCart(); }
+function cartTotal(){ return Object.values(cart).reduce((a,c)=>a+c.item.price*c.qty,0); }
+
+function renderCart(){
+  const el=$('#cartItems'); const entries=Object.values(cart);
+  if(!entries.length){ el.innerHTML='<div class="cart-empty">Toca productos para armar el pedido 👆</div>'; }
+  else{
+    el.innerHTML='';
+    entries.forEach(c=>{
+      const div=document.createElement('div'); div.className='ci';
+      div.innerHTML=`<div class="nm">${c.item.e} ${c.item.name}<small>${fmtUsd(c.item.price)} c/u</small></div>
+        <button class="qbtn" data-d="-1">−</button><span class="qn">${c.qty}</span><button class="qbtn" data-d="1">+</button>
+        <div class="pr">${fmtUsd(c.item.price*c.qty)}</div>`;
+      div.querySelector('[data-d="-1"]').onclick=()=>chgQty(c.item.id,-1);
+      div.querySelector('[data-d="1"]').onclick=()=>chgQty(c.item.id,1);
+      el.appendChild(div);
+    });
+  }
+  const tot=cartTotal();
+  $('#cartUsd').textContent=fmtUsd(tot);
+  $('#cartBs').textContent=RATE>0?fmtBs(tot*RATE):'Bs —';
+  $('#cartGo').disabled=tot<=0;
+}
+$('#cartGo').onclick=()=>{
+  if(cartTotal()<=0)return;
+  if(RATE<=0){ toast('Primero actualiza la tasa (arriba a la derecha 🔄)',true); fetchRate(true); return; }
+  $('#coTot').textContent=fmtUsd(cartTotal());
+  $('#coTotB').textContent=fmtBs(cartTotal()*RATE);
+  $('#coMesa').value=''; payMethod='Efectivo Bs';
+  document.querySelectorAll('#pm button').forEach(b=>b.classList.toggle('on',b.dataset.m===payMethod));
+  $('#coScrim').classList.add('on');
+};
+$('#coCancel').onclick=()=>$('#coScrim').classList.remove('on');
+$('#coScrim').addEventListener('click',e=>{if(e.target===$('#coScrim'))$('#coScrim').classList.remove('on');});
+document.querySelectorAll('#pm button').forEach(b=>b.onclick=()=>{ payMethod=b.dataset.m; document.querySelectorAll('#pm button').forEach(x=>x.classList.toggle('on',x===b)); });
+
+/* ── ENVIAR PEDIDO A LA CAJA (bandeja 'orders' → ticket en el POS) ── */
+$('#coConfirm').onclick=()=>{
+  const tot=cartTotal(); if(tot<=0)return;
+  const mesa=$('#coMesa').value.trim();
+  if(!mesa){ toast('Escribe la mesa o el nombre del cliente',true); return; }
+  const itemsArr=Object.values(cart).map(c=>({name:c.item.name,emoji:c.item.e,price:c.item.price,qty:c.qty,kind:c.item.kind}));
+  const now=new Date();
+  const ctrl=nextCtrl();
+  const row={
+    id:'ord_'+deviceId()+'_'+ctrl,
+    fecha:now.toLocaleDateString('es-VE'),
+    hora:now.toLocaleTimeString('es-VE',{hour:'2-digit',minute:'2-digit'}),
+    mesa:mesa,
+    cliente:mesa,
+    telefono:'',
+    items:JSON.stringify(itemsArr),
+    totalUsd:+tot.toFixed(2),
+    totalBs:RATE>0?Math.round(tot*RATE):0,
+    tasa:RATE||'',
+    metodo:payMethod+' · Mesero: '+EMP,
+    refPago:'',
+    estado:'nuevo'
+  };
+  enqueue(row);
+  cart={}; renderGrid(); renderCart();
+  $('#coScrim').classList.remove('on');
+  toast('✓ Pedido enviado a la caja');
+  flush();
+};
+
+/* ── COLA OFFLINE + ENVÍO ── */
+const QK='dz-mesero-queue';
+function loadQ(){ try{return JSON.parse(localStorage.getItem(QK)||'[]');}catch(e){return [];} }
+function saveQ(q){ try{localStorage.setItem(QK,JSON.stringify(q));}catch(e){} }
+function enqueue(row){ const q=loadQ(); q.push(row); saveQ(q); updateSyncBadge(); }
+let flushing=false;
+function _removeQId(id){ saveQ(loadQ().filter(r=>r && r.id!==id)); }   // quita ese id de la cola actual
+async function flush(){
+  if(flushing) return; if(!loadQ().length){updateSyncBadge();return;}
+  flushing=true; updateSyncBadge();
+  let guard=0;
+  try{
+    while(++guard<5000){
+      const q=loadQ(); if(!q.length) break;          // cola fresca cada vuelta (no pierde lo encolado durante el envío)
+      const row=q[0];
+      const r=await fetch(WEBAPP_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({action:'upsert',token:WRITE_TOKEN,table:'orders',row})});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const out=await r.json().catch(()=>({ok:false}));
+      if(!out.ok) throw new Error(out.error||'rechazado');
+      _removeQId(row.id); updateSyncBadge();
+    }
+  }catch(e){ /* sin internet: se reintenta */ }
+  finally{ flushing=false; updateSyncBadge(); }
+}
+function updateSyncBadge(){
+  const el=$('#syncBadge'); const n=loadQ().length;
+  if(n>0){ el.classList.remove('hide'); el.textContent='☁ '+n+' por enviar'; el.style.color='var(--gold)'; }
+  else{ el.classList.remove('hide'); el.textContent='☁ al día ✓'; el.style.color='var(--good)'; setTimeout(()=>{ if(loadQ().length===0)el.classList.add('hide'); },2500); }
+}
+window.addEventListener('online', flush);
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) flush(); });   // manda pendientes al volver a la app
+
+/* arranque: si ya verificó la clave en esta sesión, salta el login */
+if(sessionStorage.getItem('dz-m-ok')){ $('#loginView').classList.add('hide'); if(EMP) startApp(); else $('#nameView').classList.remove('hide'); }
+</script>
+</body>
+</html>
